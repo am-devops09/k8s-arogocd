@@ -3,7 +3,7 @@ kind: Deployment
 
 metadata:
   name: yakuphan-devops
-  namespace: game
+  # namespace: game
 spec:
   selector:
     matchLabels:
