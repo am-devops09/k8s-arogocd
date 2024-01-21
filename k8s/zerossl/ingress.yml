@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kuard
+  annotations: 
+     cert-manager.io/cluster-issuer: zerossl-production
+     certmanager.k8s.io/acme-challenge-type: http01
+    #  acme.cert-manager.io/http01-edit-in-place: "true"  ## temporary certificate    €€probleme of dns so you need to open port in your cluster
+
+spec:
+  
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - mv.am-devops.com
+    secretName: zero-ssl-eabsecret-2
+  rules:
+  - host: mv.am-devops.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kuard
+            port:
+              number: 80

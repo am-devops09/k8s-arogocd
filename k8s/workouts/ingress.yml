@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo5-ingress
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    kubernetes.io/ingress.class: "alb"
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: frontend
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:051715309932:certificate/6b58c318-4c45-4ef6-bf08-8500ab2c215d
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+  labels:
+    app: demo5-ingress
+spec:
+  # kubernetes.io/ingress.class: "alb"
+
+  rules:
+    - host: dev5.am-devops.com
+    - http:
+        paths:
+        - path: /?(.*)
+          pathType: Prefix
+          backend:
+            service:
+              name: client
+              port:
+                number: 3000   ## doent work issue from the app

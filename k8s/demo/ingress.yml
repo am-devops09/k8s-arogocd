@@ -1,0 +1,53 @@
+## ingress with ALb controller
+# apiVersion: networking.k8s.io/v1   
+# kind: Ingress
+# metadata:
+#   name: demo2-ingress
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     kubernetes.io/ingress.class: "alb"
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/group.name: frontend
+#     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:051715309932:certificate/6b58c318-4c45-4ef6-bf08-8500ab2c215d
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+#   labels:
+#     app: demo2-ingress
+# spec:
+#   rules:
+#     - host: dev2.am-devops.com
+#       http:
+#         paths:
+#         - path: /
+#           pathType: Prefix
+#           backend:
+#             service:
+#               name: go-app
+#               port:
+#                 number: 8080
+
+
+## ingress with ingress controller and Let'encrypt
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: go-app
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: go-app.am-devops.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: go-app
+            port:
+              number: 80
+  tls:
+    - hosts:
+      - go-app.am-devops.com
+      secretName: go-app-tls

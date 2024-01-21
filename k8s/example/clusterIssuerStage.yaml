@@ -1,0 +1,21 @@
+# apiVersion: cert-manager.io/v1
+# kind: ClusterIssuer
+# metadata:
+#   name: letsencrypt-staging
+# spec:
+#   acme:
+#     server: https://acme-staging-v02.api.letsencrypt.org/directory
+#     email: your_email@example.com
+#     privateKeySecretRef:
+#       name: letsencrypt-staging
+#     solvers:
+#     - dns01:
+#         route53:
+#           hostedZoneID: Z06330162N1SM3PIHP6K9
+#           region: us-east-2
+#       selector:
+#         dnsZones:
+#         - "am-devops.com"
+#     - http01:
+#         ingress:
+#           class: nginx

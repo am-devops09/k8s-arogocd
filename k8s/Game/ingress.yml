@@ -1,0 +1,54 @@
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: demo3-ingress
+#   annotations:
+#     alb.ingress.kubernetes.io/scheme: internet-facing
+#     kubernetes.io/ingress.class: "alb"
+#     alb.ingress.kubernetes.io/target-type: ip
+#     alb.ingress.kubernetes.io/group.name: frontend
+#     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:051715309932:certificate/6b58c318-4c45-4ef6-bf08-8500ab2c215d
+#     alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS": 443}]'
+#   labels:
+#     app: demo3-ingress
+# spec:
+#   # kubernetes.io/ingress.class: "alb"
+
+#   rules:
+#     - host: dev4.am-devops.com
+#       http:
+#         paths:
+#         - path: /
+#           pathType: Prefix
+#           backend:
+#             service:
+#               name: yakuphan-devops
+#               port:
+#                 number: 80
+
+
+## ingress with letencrypt and nginxingress controller
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: game
+  namespace: game
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: game1.am-devops.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: yakuphan-devops
+            port:
+              number: 80
+  tls:
+    - hosts:
+      - game1.am-devops.com
+      secretName: game1-tls
